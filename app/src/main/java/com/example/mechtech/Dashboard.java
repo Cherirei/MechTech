@@ -119,13 +119,6 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
 
     private void getLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
         fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
@@ -138,23 +131,23 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                         //Initialise geocoder
                         Geocoder geocoder=new Geocoder(Dashboard.this, Locale.getDefault());
                         //Initialise address list
-                        List<Address>addresses=geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1);
+                        List<Address>addresses=geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),5);
 
                         //Set Latitutes on textViews
-                        textView1.setText(Html.fromHtml("<font color='#6200EE'><b>Latitude :</br></font>"
-                        +addresses.get(0).getLatitude()));
+                        textView1.setText(Html.fromHtml("<font color='#6200EE'><b>Country :</br></font>"
+                        +addresses.get(1).getCountryName()));
                         //Set Longitude
-                        textView2.setText(Html.fromHtml("<font color='#6200EE'><b>Longitude :</br></font>"
-                                +addresses.get(0).getLongitude()));
+                        textView2.setText(Html.fromHtml("<font color='#6200EE'><b>County :</br></font>"
+                                +addresses.get(1).getAdminArea()));
                         //Set Country name
-                        textView3.setText(Html.fromHtml("<font color='#6200EE'><b>Country :</br></font>"
-                                +addresses.get(0).getCountryName()));
+                        textView3.setText(Html.fromHtml("<font color='#6200EE'><b>Sub Locality :</br></font>"
+                                +addresses.get(1).getSubLocality()));
                         //Set Locality
-                        textView4.setText(Html.fromHtml("<font color='#6200EE'><b>Locality :</br></font>"
-                                +addresses.get(0).getLocality()));
+                        textView4.setText(Html.fromHtml("<font color='#6200EE'><b>Featured Name :</br></font>"
+                                +addresses.get(1).getFeatureName()));
                         //Set Address
                         textView5.setText(Html.fromHtml("<font color='#6200EE'><b>Address :</br></font>"
-                                +addresses.get(0).getAddressLine(0)));
+                                +addresses.get(2).getAddressLine(0)));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

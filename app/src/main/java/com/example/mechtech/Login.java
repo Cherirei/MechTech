@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -23,14 +24,18 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Login extends AppCompatActivity {
 
     FirebaseAuth firebaseAuth;
+    FirebaseFirestore fStore;
     TextInputLayout input_email,input_password;
 
     Boolean valid=true;
-    TextView btnForgot;
+    TextView btnForget;
     Button btnNewUser,btnLogin;
     ProgressBar progressBar;
     @Override
@@ -41,11 +46,12 @@ public class Login extends AppCompatActivity {
 
         btnLogin=findViewById(R.id.button_Login);
         btnNewUser=findViewById(R.id.button_New_User);
-        btnForgot=findViewById(R.id.button_forget_password);
+        btnForget=findViewById(R.id.button_forget_password);
         progressBar=findViewById(R.id.progress_Bar);
         input_email=findViewById(R.id.email);
         input_password=findViewById(R.id.password);
         firebaseAuth=FirebaseAuth.getInstance();
+        fStore=FirebaseFirestore.getInstance();
 
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -57,29 +63,27 @@ public class Login extends AppCompatActivity {
                 String email=input_email.getEditText().getText().toString().trim();
                 String password=input_password.getEditText().getText().toString().trim();
                 if (valid){
-
-                }
                 if (password.length()<6){
                     input_password.setError("Characters must be more than 6");
                 }
                 progressBar.setVisibility(View.VISIBLE);
 
-                firebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                firebaseAuth.signInWithEmailAndPassword(email,password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()){
-                            Toast.makeText(Login.this,"Login Successful",Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(),Dashboard.class));
-                        }else {
-                            Toast.makeText(Login.this,"Error !"+task.getException().getMessage(),Toast.LENGTH_SHORT).show();
-                            progressBar.setVisibility(View.GONE);
-                        }
+                    public void onSuccess(AuthResult authResult) {
+                        Toast.makeText(Login.this,"Login Successful",Toast.LENGTH_SHORT).show();
+                        checkUserAccessLevel(authResult.getUser().getUid());
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(Login.this,"Error !"+e.getMessage(),Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
                     }
                 });
-
+                }
             }
         });
-
 
         btnNewUser.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,7 +92,7 @@ public class Login extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        btnForgot.setOnClickListener(new View.OnClickListener() {
+        btnForget.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final EditText resetMail=new EditText(v.getContext());
@@ -122,6 +126,28 @@ public class Login extends AppCompatActivity {
                     }
                 });
                 passwordResetDialog.create().show();
+            }
+        });
+    }
+
+    private void checkUserAccessLevel(String uid) {
+        DocumentReference df=fStore.collection("Users").document(uid);
+        //Extract the data from the document
+        df.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Log.d("TAG","onSuccess: "+documentSnapshot.getData());
+                //Identify the access level
+                if (documentSnapshot.getString("isAdmin")!=null){
+                    //If user is Admin
+                    startActivity(new Intent(getApplicationContext(),AdminUser.class));
+                    finish();
+                }else {
+                    if (documentSnapshot.getString("isUser") != null) {
+                        startActivity(new Intent(getApplicationContext(), Dashboard.class));
+                        finish();
+                    }
+                }
             }
         });
     }
