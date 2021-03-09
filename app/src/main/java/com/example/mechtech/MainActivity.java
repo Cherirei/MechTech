@@ -18,10 +18,10 @@ public class MainActivity extends AppCompatActivity {
         btn_click=findViewById(R.id.button_click);
 
         btn_click.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(getApplicationContext(),Login.class);
-                startActivity(intent);
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent=new Intent(getApplicationContext(),Login.class);
+                        startActivity(intent);
             }
         });
     }

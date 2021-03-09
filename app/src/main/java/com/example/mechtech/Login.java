@@ -29,6 +29,7 @@ public class Login extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     TextInputLayout input_email,input_password;
 
+    Boolean valid=true;
     TextView btnForgot;
     Button btnNewUser,btnLogin;
     ProgressBar progressBar;
@@ -46,18 +47,17 @@ public class Login extends AppCompatActivity {
         input_password=findViewById(R.id.password);
         firebaseAuth=FirebaseAuth.getInstance();
 
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                checkField(input_email);
+                checkField(input_password);
 
                 String email=input_email.getEditText().getText().toString().trim();
                 String password=input_password.getEditText().getText().toString().trim();
+                if (valid){
 
-                if (TextUtils.isEmpty(email)){
-                    input_email.setError("Email is Required");
-                }
-                if (TextUtils.isEmpty(password)){
-                    input_password.setError("Password is Required");
                 }
                 if (password.length()<6){
                     input_password.setError("Characters must be more than 6");
@@ -124,5 +124,24 @@ public class Login extends AppCompatActivity {
                 passwordResetDialog.create().show();
             }
         });
+    }
+
+    private boolean checkField(TextInputLayout textInputLayout) {
+        if (textInputLayout.getEditText().toString().isEmpty()){
+            textInputLayout.setError("Ensure all fields are Entered");
+            valid=false;
+        }else {
+            valid=true;
+        }
+        return valid;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (FirebaseAuth.getInstance().getCurrentUser()!=null){
+            startActivity(new Intent(getApplicationContext(),Dashboard.class));
+            finish();
+        }
     }
 }

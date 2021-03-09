@@ -24,6 +24,8 @@ public class SignUp extends AppCompatActivity {
     DatabaseReference reference;
     FirebaseAuth firebaseAuth;
 
+    Boolean valid=true;
+
     TextInputLayout regName,regUsername,regEmail,regPhoneNo,regPassword;
     Button btnlogin_user,btnRegister;
     ProgressBar progressBar;
@@ -48,6 +50,8 @@ public class SignUp extends AppCompatActivity {
         regPhoneNo=findViewById(R.id.reg_phoneNo);
         regPassword=findViewById(R.id.reg_password);
 
+
+
     //save data in Firebase on button click
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,6 +65,7 @@ public class SignUp extends AppCompatActivity {
                 String email=regEmail.getEditText().getText().toString().trim();
                 String phonenumber=regPhoneNo.getEditText().getText().toString();
                 String password=regPassword.getEditText().getText().toString().trim();
+
 
                 if (TextUtils.isEmpty(email)){
                     regEmail.setError("Email is Required");
