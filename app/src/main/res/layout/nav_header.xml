@@ -4,20 +4,22 @@
     android:layout_height="200dp"
     android:background="#3F51B5"
     android:gravity="bottom"
-    android:padding="16dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="16dp">
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_mechanics"
-        />
+        android:src="@drawable/ic_mechanics" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
         android:text="Service Station Finder"
-        android:textColor="#ffffff"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="#ffffff" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

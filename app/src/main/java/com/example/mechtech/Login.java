@@ -32,26 +32,27 @@ public class Login extends AppCompatActivity {
 
     FirebaseAuth firebaseAuth;
     FirebaseFirestore fStore;
-    TextInputLayout input_email,input_password;
+    TextInputLayout input_email, input_password;
 
-    Boolean valid=true;
+    Boolean valid = true;
     TextView btnForget;
-    Button btnNewUser,btnLogin;
+    Button btnNewUser, btnLogin;
     ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams);
         setContentView(R.layout.activity_login);
 
-        btnLogin=findViewById(R.id.button_Login);
-        btnNewUser=findViewById(R.id.button_New_User);
-        btnForget=findViewById(R.id.button_forget_password);
-        progressBar=findViewById(R.id.progress_Bar);
-        input_email=findViewById(R.id.email);
-        input_password=findViewById(R.id.password);
-        firebaseAuth=FirebaseAuth.getInstance();
-        fStore=FirebaseFirestore.getInstance();
+        btnLogin = findViewById(R.id.button_Login);
+        btnNewUser = findViewById(R.id.button_New_User);
+        btnForget = findViewById(R.id.button_forget_password);
+        progressBar = findViewById(R.id.progress_Bar);
+        input_email = findViewById(R.id.email);
+        input_password = findViewById(R.id.password);
+        firebaseAuth = FirebaseAuth.getInstance();
+        fStore = FirebaseFirestore.getInstance();
 
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -60,27 +61,27 @@ public class Login extends AppCompatActivity {
                 checkField(input_email);
                 checkField(input_password);
 
-                String email=input_email.getEditText().getText().toString().trim();
-                String password=input_password.getEditText().getText().toString().trim();
-                if (valid){
-                if (password.length()<6){
-                    input_password.setError("Characters must be more than 6");
-                }
-                progressBar.setVisibility(View.VISIBLE);
+                String email = input_email.getEditText().getText().toString().trim();
+                String password = input_password.getEditText().getText().toString().trim();
+                if (valid) {
+                    if (password.length() < 6) {
+                        input_password.setError("Characters must be more than 6");
+                    }
+                    progressBar.setVisibility(View.VISIBLE);
 
-                firebaseAuth.signInWithEmailAndPassword(email,password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                    @Override
-                    public void onSuccess(AuthResult authResult) {
-                        Toast.makeText(Login.this,"Login Successful",Toast.LENGTH_SHORT).show();
-                        checkUserAccessLevel(authResult.getUser().getUid());
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(Login.this,"Error !"+e.getMessage(),Toast.LENGTH_SHORT).show();
-                        progressBar.setVisibility(View.GONE);
-                    }
-                });
+                    firebaseAuth.signInWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                        @Override
+                        public void onSuccess(AuthResult authResult) {
+                            Toast.makeText(Login.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                            checkUserAccessLevel(authResult.getUser().getUid());
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(Login.this, "Error !" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    });
                 }
             }
         });
@@ -88,15 +89,15 @@ public class Login extends AppCompatActivity {
         btnNewUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getApplicationContext(),SignUp.class);
+                Intent intent = new Intent(getApplicationContext(), SignUp.class);
                 startActivity(intent);
             }
         });
         btnForget.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final EditText resetMail=new EditText(v.getContext());
-                AlertDialog.Builder passwordResetDialog=new AlertDialog.Builder(v.getContext());
+                final EditText resetMail = new EditText(v.getContext());
+                AlertDialog.Builder passwordResetDialog = new AlertDialog.Builder(v.getContext());
                 passwordResetDialog.setTitle("Reset Password?");
                 passwordResetDialog.setMessage("Enter Your Email To Receive Reset Link.");
                 passwordResetDialog.setView(resetMail);
@@ -105,16 +106,16 @@ public class Login extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //extract the mail and send the link
-                        String mail=resetMail.getText().toString().trim();
+                        String mail = resetMail.getText().toString().trim();
                         firebaseAuth.sendPasswordResetEmail(mail).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                Toast.makeText(Login.this,"Reset Link Sent To Your Mail.",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Login.this, "Reset Link Sent To Your Mail.", Toast.LENGTH_SHORT).show();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(Login.this,"Error! Reset Link is Not Sent"+e.getMessage(),Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Login.this, "Error! Reset Link is Not Sent" + e.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
@@ -122,7 +123,7 @@ public class Login extends AppCompatActivity {
                 passwordResetDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                    //Close the Dialog
+                        //Close the Dialog
                     }
                 });
                 passwordResetDialog.create().show();
@@ -131,18 +132,18 @@ public class Login extends AppCompatActivity {
     }
 
     private void checkUserAccessLevel(String uid) {
-        DocumentReference df=fStore.collection("Users").document(uid);
+        DocumentReference df = fStore.collection("Users").document(uid);
         //Extract the data from the document
         df.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                Log.d("TAG","onSuccess: "+documentSnapshot.getData());
+                Log.d("TAG", "onSuccess: " + documentSnapshot.getData());
                 //Identify the access level
-                if (documentSnapshot.getString("isAdmin")!=null){
+                if (documentSnapshot.getString("isAdmin") != null) {
                     //If user is Admin
-                    startActivity(new Intent(getApplicationContext(),AdminUser.class));
+                    startActivity(new Intent(getApplicationContext(), AdminUser.class));
                     finish();
-                }else {
+                } else {
                     if (documentSnapshot.getString("isUser") != null) {
                         startActivity(new Intent(getApplicationContext(), Dashboard.class));
                         finish();
@@ -153,11 +154,11 @@ public class Login extends AppCompatActivity {
     }
 
     private boolean checkField(TextInputLayout textInputLayout) {
-        if (textInputLayout.getEditText().toString().isEmpty()){
+        if (textInputLayout.getEditText().toString().isEmpty()) {
             textInputLayout.setError("Ensure all fields are Entered");
-            valid=false;
-        }else {
-            valid=true;
+            valid = false;
+        } else {
+            valid = true;
         }
         return valid;
     }
@@ -165,8 +166,8 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if (FirebaseAuth.getInstance().getCurrentUser()!=null){
-            startActivity(new Intent(getApplicationContext(),Dashboard.class));
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            startActivity(new Intent(getApplicationContext(), Dashboard.class));
             finish();
         }
     }

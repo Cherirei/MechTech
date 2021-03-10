@@ -30,30 +30,30 @@ public class SignUp extends AppCompatActivity {
     DatabaseReference reference;
     FirebaseAuth firebaseAuth;
     FirebaseFirestore fStore;
-    Boolean valid=true;
+    Boolean valid = true;
 
-    TextInputLayout regName,regUsername,regEmail,regPhoneNo,regPassword;
-    Button btnlogin_user,btnRegister;
+    TextInputLayout regName, regUsername, regEmail, regPhoneNo, regPassword;
+    Button btnlogin_user, btnRegister;
     ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        btnlogin_user=findViewById(R.id.button_login_account);
-        btnRegister=findViewById(R.id.buttonRegister);
-        progressBar=findViewById(R.id.progress_bar);
-        firebaseAuth=FirebaseAuth.getInstance();
-        fStore=FirebaseFirestore.getInstance();
+        btnlogin_user = findViewById(R.id.button_login_account);
+        btnRegister = findViewById(R.id.buttonRegister);
+        progressBar = findViewById(R.id.progress_bar);
+        firebaseAuth = FirebaseAuth.getInstance();
+        fStore = FirebaseFirestore.getInstance();
+        //Hook to all xml elements in activity_signup.xml
+        regName = findViewById(R.id.reg_name);
+        regUsername = findViewById(R.id.reg_username);
+        regEmail = findViewById(R.id.reg_email);
+        regPhoneNo = findViewById(R.id.reg_phoneNo);
+        regPassword = findViewById(R.id.reg_password);
 
-    //Hook to all xml elements in activity_signup.xml
-        regName=findViewById(R.id.reg_name);
-        regUsername=findViewById(R.id.reg_username);
-        regEmail=findViewById(R.id.reg_email);
-        regPhoneNo=findViewById(R.id.reg_phoneNo);
-        regPassword=findViewById(R.id.reg_password);
-
-    //save data in Firebase on button click
+        //save data in Firebase on button click
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,43 +63,43 @@ public class SignUp extends AppCompatActivity {
                 checkField(regEmail);
                 checkField(regPhoneNo);
                 checkField(regPassword);
-                rootNode=FirebaseDatabase.getInstance();
-                reference=rootNode.getReference("user");
+                rootNode = FirebaseDatabase.getInstance();
+                reference = rootNode.getReference("user");
 
-                 //Get all the values
-                final String name=regName.getEditText().getText().toString();
-                final String username=regUsername.getEditText().getText().toString();
-                final String email=regEmail.getEditText().getText().toString();
-                final String phonenumber=regPhoneNo.getEditText().getText().toString();
-                final String password=regPassword.getEditText().getText().toString();
+                //Get all the values
+                final String name = regName.getEditText().getText().toString();
+                final String username = regUsername.getEditText().getText().toString();
+                final String email = regEmail.getEditText().getText().toString();
+                final String phonenumber = regPhoneNo.getEditText().getText().toString();
+                final String password = regPassword.getEditText().getText().toString();
 
-                if (password.length()<6){
+                if (password.length() < 6) {
                     regPassword.setError("Characters must be more than 6");
                 }
                 progressBar.setVisibility(View.VISIBLE);
 
-                firebaseAuth.createUserWithEmailAndPassword(email.trim(),password.trim()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                firebaseAuth.createUserWithEmailAndPassword(email.trim(), password.trim()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()){
-                            FirebaseUser user=firebaseAuth.getCurrentUser();
-                            Toast.makeText(SignUp.this,"Registration Successful",Toast.LENGTH_SHORT).show();
-                            DocumentReference df=fStore.collection("Users").document(user.getUid());
-                            Map<String ,Object> userInfo=new HashMap<>();
-                            userInfo.put("Name",name);
-                            userInfo.put("UserName",username);
-                            userInfo.put("Email",email.trim());
-                            userInfo.put("PhoneNo",phonenumber);
-                            userInfo.put("Password",password.trim());
+                        if (task.isSuccessful()) {
+                            FirebaseUser user = firebaseAuth.getCurrentUser();
+                            Toast.makeText(SignUp.this, "Registration Successful", Toast.LENGTH_SHORT).show();
+                            DocumentReference df = fStore.collection("Users").document(user.getUid());
+                            Map<String, Object> userInfo = new HashMap<>();
+                            userInfo.put("Name", name);
+                            userInfo.put("UserName", username);
+                            userInfo.put("Email", email.trim());
+                            userInfo.put("PhoneNo", phonenumber);
+                            userInfo.put("Password", password.trim());
                             //Specify the access level
-                            userInfo.put("isUser","1");
+                            userInfo.put("isUser", "1");
                             //Save data to firestore
                             df.set(userInfo);
 
-                            startActivity(new Intent(getApplicationContext(),Dashboard.class));
+                            startActivity(new Intent(getApplicationContext(), Dashboard.class));
                             finish();
-                        }else {
-                            Toast.makeText(SignUp.this,"Error !"+task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(SignUp.this, "Error !" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             progressBar.setVisibility(View.GONE);
                         }
                     }
@@ -114,17 +114,18 @@ public class SignUp extends AppCompatActivity {
         btnlogin_user.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getApplicationContext(),Login.class);
+                Intent intent = new Intent(getApplicationContext(), Login.class);
                 startActivity(intent);
             }
         });
     }
+
     private boolean checkField(TextInputLayout textInputLayout) {
-        if (textInputLayout.getEditText().toString().isEmpty()){
+        if (textInputLayout.getEditText().toString().isEmpty()) {
             textInputLayout.setError("Ensure all fields are Entered");
-            valid=false;
-        }else {
-            valid=true;
+            valid = false;
+        } else {
+            valid = true;
         }
         return valid;
     }

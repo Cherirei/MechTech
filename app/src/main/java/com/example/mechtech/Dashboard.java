@@ -125,29 +125,29 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
             @Override
             public void onComplete(@NonNull Task<Location> task) {
                 //Initialise location
-                Location location=task.getResult();
-                if (location!=null){
+                Location location = task.getResult();
+                if (location != null) {
                     try {
                         //Initialise geocoder
-                        Geocoder geocoder=new Geocoder(Dashboard.this, Locale.getDefault());
+                        Geocoder geocoder = new Geocoder(Dashboard.this, Locale.getDefault());
                         //Initialise address list
-                        List<Address>addresses=geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),5);
+                        List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 5);
 
                         //Set Latitutes on textViews
                         textView1.setText(Html.fromHtml("<font color='#6200EE'><b>Country :</br></font>"
-                        +addresses.get(1).getCountryName()));
+                                + addresses.get(1).getCountryName()));
                         //Set Longitude
                         textView2.setText(Html.fromHtml("<font color='#6200EE'><b>County :</br></font>"
-                                +addresses.get(1).getAdminArea()));
+                                + addresses.get(1).getAdminArea()));
                         //Set Country name
                         textView3.setText(Html.fromHtml("<font color='#6200EE'><b>Sub Locality :</br></font>"
-                                +addresses.get(1).getSubLocality()));
+                                + addresses.get(1).getSubLocality()));
                         //Set Locality
                         textView4.setText(Html.fromHtml("<font color='#6200EE'><b>Featured Name :</br></font>"
-                                +addresses.get(1).getFeatureName()));
+                                + addresses.get(1).getFeatureName()));
                         //Set Address
                         textView5.setText(Html.fromHtml("<font color='#6200EE'><b>Address :</br></font>"
-                                +addresses.get(2).getAddressLine(0)));
+                                + addresses.get(2).getAddressLine(0)));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -158,15 +158,16 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
 
     @Override
     public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)){
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        }else {
-        super.onBackPressed();}
+        } else {
+            super.onBackPressed();
+        }
     }
 
     public void logout(View view) {
         FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent(getApplicationContext(),Login.class));
+        startActivity(new Intent(getApplicationContext(), Login.class));
         finish();
     }
 

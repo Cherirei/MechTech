@@ -3,6 +3,7 @@
     package="com.example.mechtech">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -31,6 +32,9 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts"
             android:value="com.myapp.ui.MainActivity" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDuDjXE7zPiMquL-o7ncFlMLpvWacVvr4Q"/>
     </application>
 
 </manifest>
