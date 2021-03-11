@@ -23,6 +23,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -36,13 +37,13 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-public class Dashboard extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class Dash extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
     private NavigationView navigationView;
     private Toolbar toolbar;
-    FusedLocationProviderClient fusedLocationProviderClient;
-    Button btnLocation;
+  /*  FusedLocationProviderClient fusedLocationProviderClient;
+    Button btnLocation;*/
     TextView textView1, textView2, textView3, textView4, textView5;
 
     @Override
@@ -53,30 +54,30 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         toolbar = findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
 
-        btnLocation = findViewById(R.id.button_location);
+        //btnLocation = findViewById(R.id.button_location);
         textView1 = findViewById(R.id.text_view1);
         textView2 = findViewById(R.id.text_view2);
         textView3 = findViewById(R.id.text_view3);
         textView4 = findViewById(R.id.text_view4);
         textView5 = findViewById(R.id.text_view5);
 
-        //initialise fusedLocationProviderClient
+     /*   //initialise fusedLocationProviderClient
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         btnLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Check permission
-                if (ActivityCompat.checkSelfPermission(Dashboard.this, Manifest.permission.ACCESS_FINE_LOCATION)
+                if (ActivityCompat.checkSelfPermission(Dash.this, Manifest.permission.ACCESS_FINE_LOCATION)
                         == PackageManager.PERMISSION_GRANTED) {
                     //if permission granted
                     getLocation();
                 } else {
                     //when permission denied
-                    ActivityCompat.requestPermissions(Dashboard.this, new String[]
+                    ActivityCompat.requestPermissions(Dash.this, new String[]
                             {Manifest.permission.ACCESS_FINE_LOCATION}, 44);
                 }
             }
-        });
+        });*/
 
 
         drawer = findViewById(R.id.drawer_layout);
@@ -91,33 +92,32 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         //Initialise and Assign Variables
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         //Set Home Selected
-        bottomNavigationView.setSelectedItemId(R.id.home);
-        //Perform ItemSelectedListener
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+       getSupportFragmentManager().beginTransaction().replace(R.id.frament_container,new DashboardFragment()).commit();
+        bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
+    }
+        private BottomNavigationView.OnNavigationItemSelectedListener navListener=new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
+                Fragment selectedFragment=null;
+                switch (menuItem.getItemId()){
                     case R.id.home:
-                        return true;
+                        selectedFragment=new DashboardFragment();
+                        break;
                     case R.id.notification:
-                        startActivity(new Intent(getApplicationContext(), Notification.class));
-                        overridePendingTransition(0, 0);
-                        return true;
+                        selectedFragment=new NotificationFragment();
+                        break;
                     case R.id.setting:
-                        startActivity(new Intent(getApplicationContext(), Settings.class));
-                        overridePendingTransition(0, 0);
-                        return true;
+                        selectedFragment=new SettingFragment();
+                        break;
                     case R.id.profile:
-                        startActivity(new Intent(getApplicationContext(), User_Profile.class));
-                        overridePendingTransition(0, 0);
-                        return true;
+                        selectedFragment=new UserProfileFrament();
+                        break;
                 }
-                return false;
+                getSupportFragmentManager().beginTransaction().replace(R.id.frament_container,selectedFragment).commit();
+                return true;
             }
-        });
-    }
-
-    private void getLocation() {
+        };
+ /*   private void getLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
@@ -129,7 +129,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                 if (location != null) {
                     try {
                         //Initialise geocoder
-                        Geocoder geocoder = new Geocoder(Dashboard.this, Locale.getDefault());
+                        Geocoder geocoder = new Geocoder(Dash.this, Locale.getDefault());
                         //Initialise address list
                         List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 5);
 
@@ -154,7 +154,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                 }
             }
         });
-    }
+    }*/
 
     @Override
     public void onBackPressed() {

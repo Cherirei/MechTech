@@ -17,7 +17,7 @@
         <activity android:name=".User_Profile" />
         <activity android:name=".Settings" />
         <activity android:name=".Notification" />
-        <activity android:name=".Dashboard" />
+        <activity android:name=".Dash" />
         <activity android:name=".Login" />
         <activity android:name=".SignUp" />
         <activity android:name=".MainActivity">

@@ -145,7 +145,7 @@ public class Login extends AppCompatActivity {
                     finish();
                 } else {
                     if (documentSnapshot.getString("isUser") != null) {
-                        startActivity(new Intent(getApplicationContext(), Dashboard.class));
+                        startActivity(new Intent(getApplicationContext(), com.example.mechtech.Dash.class));
                         finish();
                     }
                 }
@@ -167,7 +167,7 @@ public class Login extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            startActivity(new Intent(getApplicationContext(), Dashboard.class));
+            startActivity(new Intent(getApplicationContext(), Dash.class));
             finish();
         }
     }
