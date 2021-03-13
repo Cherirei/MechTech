@@ -1,7 +1,7 @@
 package com.example.mechtech;
 
 public class UserHelperClass {
-    String name,username,email,phoneNo,password;
+    String name, username, email, phoneNo, password;
 
     public UserHelperClass(String name, String username, String email, String phoneNo, String password) {
         this.name = name;
@@ -53,4 +53,6 @@ public class UserHelperClass {
     public void setPassword(String password) {
         this.password = password;
     }
+
+
 }

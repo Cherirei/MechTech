@@ -1,50 +1,36 @@
 package com.example.mechtech;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.support.v4.os.IResultReceiver;
-import android.text.Html;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
 
 public class Dash extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
     private NavigationView navigationView;
     private Toolbar toolbar;
-  /*  FusedLocationProviderClient fusedLocationProviderClient;
-    Button btnLocation;*/
+    /*  FusedLocationProviderClient fusedLocationProviderClient;
+      Button btnLocation;*/
     TextView textView1, textView2, textView3, textView4, textView5;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,100 +47,50 @@ public class Dash extends AppCompatActivity implements NavigationView.OnNavigati
         textView4 = findViewById(R.id.text_view4);
         textView5 = findViewById(R.id.text_view5);
 
-     /*   //initialise fusedLocationProviderClient
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        btnLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Check permission
-                if (ActivityCompat.checkSelfPermission(Dash.this, Manifest.permission.ACCESS_FINE_LOCATION)
-                        == PackageManager.PERMISSION_GRANTED) {
-                    //if permission granted
-                    getLocation();
-                } else {
-                    //when permission denied
-                    ActivityCompat.requestPermissions(Dash.this, new String[]
-                            {Manifest.permission.ACCESS_FINE_LOCATION}, 44);
-                }
-            }
-        });*/
-
-
         drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open,
                 R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        //  getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         navigationView = findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.frament_container, new DashboardFragment()).commit();
+            navigationView.setCheckedItem(R.id.nav_home);
 
-        //Initialise and Assign Variables
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-        //Set Home Selected
-       getSupportFragmentManager().beginTransaction().replace(R.id.frament_container,new DashboardFragment()).commit();
-        bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
-    }
-        private BottomNavigationView.OnNavigationItemSelectedListener navListener=new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                Fragment selectedFragment=null;
-                switch (menuItem.getItemId()){
-                    case R.id.home:
-                        selectedFragment=new DashboardFragment();
-                        break;
-                    case R.id.notification:
-                        selectedFragment=new NotificationFragment();
-                        break;
-                    case R.id.setting:
-                        selectedFragment=new SettingFragment();
-                        break;
-                    case R.id.profile:
-                        selectedFragment=new UserProfileFrament();
-                        break;
-                }
-                getSupportFragmentManager().beginTransaction().replace(R.id.frament_container,selectedFragment).commit();
-                return true;
-            }
-        };
- /*   private void getLocation() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
+            //Initialise and Assign Variables
+            BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+            //Set Home Selected
+            getSupportFragmentManager().beginTransaction().replace(R.id.frament_container, new DashboardFragment()).commit();
+            bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
         }
-        fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
-            @Override
-            public void onComplete(@NonNull Task<Location> task) {
-                //Initialise location
-                Location location = task.getResult();
-                if (location != null) {
-                    try {
-                        //Initialise geocoder
-                        Geocoder geocoder = new Geocoder(Dash.this, Locale.getDefault());
-                        //Initialise address list
-                        List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 5);
+    }
 
-                        //Set Latitutes on textViews
-                        textView1.setText(Html.fromHtml("<font color='#6200EE'><b>Country :</br></font>"
-                                + addresses.get(1).getCountryName()));
-                        //Set Longitude
-                        textView2.setText(Html.fromHtml("<font color='#6200EE'><b>County :</br></font>"
-                                + addresses.get(1).getAdminArea()));
-                        //Set Country name
-                        textView3.setText(Html.fromHtml("<font color='#6200EE'><b>Sub Locality :</br></font>"
-                                + addresses.get(1).getSubLocality()));
-                        //Set Locality
-                        textView4.setText(Html.fromHtml("<font color='#6200EE'><b>Featured Name :</br></font>"
-                                + addresses.get(1).getFeatureName()));
-                        //Set Address
-                        textView5.setText(Html.fromHtml("<font color='#6200EE'><b>Address :</br></font>"
-                                + addresses.get(2).getAddressLine(0)));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
+    private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+            Fragment selectedFragment = null;
+            switch (menuItem.getItemId()) {
+                case R.id.home:
+                    selectedFragment = new DashboardFragment();
+                    break;
+                case R.id.notification:
+                    selectedFragment = new NotificationFragment();
+                    break;
+                case R.id.setting:
+                    selectedFragment = new SettingFragment();
+                    break;
+                case R.id.profile:
+                    selectedFragment = new UserProfileFrament();
+                    break;
             }
-        });
-    }*/
+            getSupportFragmentManager().beginTransaction().replace(R.id.frament_container, selectedFragment).commit();
+            return true;
+        }
+    };
 
     @Override
     public void onBackPressed() {
@@ -165,7 +101,7 @@ public class Dash extends AppCompatActivity implements NavigationView.OnNavigati
         }
     }
 
-    public void logout(View view) {
+    public void logout() {
         FirebaseAuth.getInstance().signOut();
         startActivity(new Intent(getApplicationContext(), Login.class));
         finish();
@@ -173,6 +109,49 @@ public class Dash extends AppCompatActivity implements NavigationView.OnNavigati
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        return false;
+        switch (menuItem.getItemId()) {
+            case R.id.nav_home:
+                getSupportFragmentManager().beginTransaction().replace(R.id.frament_container, new DashboardFragment()).commit();
+                break;
+          /*  case R.id.nav_service_stations:
+                getSupportFragmentManager().beginTransaction().replace(R.id.frament_container, new ServiceStationFragment()).commit();
+                break;*/
+            case R.id.nav_profile:
+                getSupportFragmentManager().beginTransaction().replace(R.id.frament_container, new UserProfileFrament()).commit();
+                break;
+            case R.id.nav_rate_us:
+                getSupportFragmentManager().beginTransaction().replace(R.id.frament_container, new RatingFragment()).commit();
+                break;
+            case R.id.nav_share:
+                Toast.makeText(this, "Sorry!! The App is not in PlayStore Currently.", Toast.LENGTH_SHORT).show();
+             /*   Intent shareIntent =   new Intent(android.content.Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT,"Insert Subject here");
+                String app_url = " https://play.google.com/store/apps/details?id=my.example.javatpoint";
+                shareIntent.putExtra(android.content.Intent.EXTRA_TEXT,app_url);
+                startActivity(Intent.createChooser(shareIntent, "Share via"));*/
+                break;
+            case R.id.nav_feedback:
+                getSupportFragmentManager().beginTransaction().replace(R.id.frament_container, new FeedbackFragment()).commit();
+                break;
+            case R.id.nav_contact_us:
+
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)
+                        == PackageManager.PERMISSION_GRANTED) {
+                    //if permission granted
+                    Intent intent = new Intent(Intent.ACTION_CALL);
+                    intent.setData(Uri.parse("tel:0729105112"));
+                    startActivity(intent);
+                } else {
+                    //when permission denied
+                    ActivityCompat.requestPermissions(this, new String[]
+                            {Manifest.permission.CALL_PHONE}, 44);
+                }
+                break;
+            case R.id.nav_sign_out:
+                logout();
+        }
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 }

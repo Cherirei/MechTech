@@ -3,38 +3,38 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/near_me"
-            android:icon="@drawable/ic_nearby"
-            android:title="Near Me" />
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_nav_home"
+            android:title="Home" />
         <item
-            android:id="@+id/service_stations"
+            android:id="@+id/nav_service_stations"
             android:icon="@drawable/ic_service_station1"
             android:title="Service Stations" />
         <item
-            android:id="@+id/profile"
+            android:id="@+id/nav_profile"
             android:icon="@drawable/ic_user"
-            android:title="Personal Profile" />
+            android:title="Profile" />
         <item
-            android:id="@+id/rate_us"
+            android:id="@+id/nav_rate_us"
             android:icon="@drawable/ic_star1"
             android:title="Rate Us" />
     </group>
     <item android:title="Communicate">
         <menu>
             <item
-                android:id="@+id/navi_share"
+                android:id="@+id/nav_share"
                 android:icon="@drawable/ic_share"
                 android:title="Share" />
             <item
-                android:id="@+id/navi_feedback"
+                android:id="@+id/nav_feedback"
                 android:icon="@drawable/ic_feedback1"
                 android:title="Feedback" />
             <item
-                android:id="@+id/navi_contact_us"
+                android:id="@+id/nav_contact_us"
                 android:icon="@drawable/ic_contact"
                 android:title="Contact Us" />
             <item
-                android:id="@+id/sign_out"
+                android:id="@+id/nav_sign_out"
                 android:icon="@drawable/ic_exit"
                 android:title="Logout" />
         </menu>
