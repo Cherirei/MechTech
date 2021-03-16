@@ -4,16 +4,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".AdminUser">
 
-    <Button
-        android:id="@+id/buttonLog_Out"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/admin_tool_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:gravity="center_horizontal"
-        android:onClick="logout"
-        android:text="Logout"
-        android:textSize="20sp" />
+        android:layout_height="100dp"
+        android:background="@color/colorPrimaryDark"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:title="Admin">
+
+        <Button
+            android:id="@+id/buttonLog_Out"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:background="@color/colorPrimaryDark"
+            android:onClick="logout"
+            android:text="Logout"
+            android:textSize="15sp"
+            android:textColor="#F12828"/>
+    </androidx.appcompat.widget.Toolbar>
+
+    <FrameLayout
+        android:id="@+id/frament_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/admin_tool_bar" />
 
 </RelativeLayout>

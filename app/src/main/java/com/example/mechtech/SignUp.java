@@ -29,7 +29,7 @@ public class SignUp extends AppCompatActivity {
     DatabaseReference reference;
     FirebaseAuth firebaseAuth;
     FirebaseFirestore fStore;
-    Boolean valid = true;
+  //  Boolean valid = true;
 
     TextInputLayout regName, regUsername, regEmail, regPhoneNo, regPassword;
     Button btnlogin_user, btnRegister;
@@ -56,12 +56,6 @@ public class SignUp extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                checkField(regName);
-                checkField(regUsername);
-                checkField(regEmail);
-                checkField(regPhoneNo);
-                checkField(regPassword);
                 rootNode = FirebaseDatabase.getInstance();
                 reference = rootNode.getReference("user");
 
@@ -72,37 +66,46 @@ public class SignUp extends AppCompatActivity {
                 final String phonenumber = regPhoneNo.getEditText().getText().toString();
                 final String password = regPassword.getEditText().getText().toString();
 
-                if (password.length() < 6) {
-                    regPassword.setError("Characters must be more than 6");
-                }
+
                 progressBar.setVisibility(View.VISIBLE);
+                if (email.isEmpty()) {
+                    Toast.makeText(SignUp.this, "Email must not be empty", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
+                } else if (password.isEmpty()) {
+                    Toast.makeText(SignUp.this, "Password must not be empty", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
+                }
+                else if (password.length() < 6) {
+                    regPassword.setError("Characters must be more than 6");
+                    progressBar.setVisibility(View.GONE);
+                } else {
+                    firebaseAuth.createUserWithEmailAndPassword(email.trim(), password.trim()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                FirebaseUser user = firebaseAuth.getCurrentUser();
+                                Toast.makeText(SignUp.this, "Registration Successful", Toast.LENGTH_SHORT).show();
+                                DocumentReference df = fStore.collection("Users").document(user.getUid());
+                                Map<String, Object> userInfo = new HashMap<>();
+                                userInfo.put("Name", name);
+                                userInfo.put("UserName", username);
+                                userInfo.put("Email", email.trim());
+                                userInfo.put("PhoneNo", phonenumber);
+                                userInfo.put("Password", password.trim());
+                                //Specify the access level
+                                userInfo.put("isUser", "1");
+                                //Save data to firestore
+                                df.set(userInfo);
 
-                firebaseAuth.createUserWithEmailAndPassword(email.trim(), password.trim()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            FirebaseUser user = firebaseAuth.getCurrentUser();
-                            Toast.makeText(SignUp.this, "Registration Successful", Toast.LENGTH_SHORT).show();
-                            DocumentReference df = fStore.collection("Users").document(user.getUid());
-                            Map<String, Object> userInfo = new HashMap<>();
-                            userInfo.put("Name", name);
-                            userInfo.put("UserName", username);
-                            userInfo.put("Email", email.trim());
-                            userInfo.put("PhoneNo", phonenumber);
-                            userInfo.put("Password", password.trim());
-                            //Specify the access level
-                            userInfo.put("isUser", "1");
-                            //Save data to firestore
-                            df.set(userInfo);
-
-                            startActivity(new Intent(getApplicationContext(), Dash.class));
-                            finish();
-                        } else {
-                            Toast.makeText(SignUp.this, "Error !" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                            progressBar.setVisibility(View.GONE);
+                                startActivity(new Intent(getApplicationContext(), Dash.class));
+                                finish();
+                            } else {
+                                Toast.makeText(SignUp.this, "Error !" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                progressBar.setVisibility(View.GONE);
+                            }
                         }
-                    }
-                });
+                    });
+            }
 
              /*   UserHelperClass helperClass=new UserHelperClass(name,username,email,phonenumber,password);
 
@@ -117,15 +120,5 @@ public class SignUp extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-    }
-
-    private boolean checkField(TextInputLayout textInputLayout) {
-        if (textInputLayout.getEditText().toString().isEmpty()) {
-            textInputLayout.setError("Ensure all fields are Entered");
-            valid = false;
-        } else {
-            valid = true;
-        }
-        return valid;
     }
 }

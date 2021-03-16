@@ -1,26 +1,22 @@
 package com.example.mechtech;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,7 +30,7 @@ public class Login extends AppCompatActivity {
     FirebaseFirestore fStore;
     TextInputLayout input_email, input_password;
 
-    Boolean valid = true;
+    //Boolean valid = true;
     TextView btnForget;
     Button btnNewUser, btnLogin;
     ProgressBar progressBar;
@@ -58,17 +54,22 @@ public class Login extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkField(input_email);
-                checkField(input_password);
 
                 String email = input_email.getEditText().getText().toString().trim();
                 String password = input_password.getEditText().getText().toString().trim();
-                if (valid) {
-                    if (password.length() < 6) {
-                        input_password.setError("Characters must be more than 6");
-                    }
-                    progressBar.setVisibility(View.VISIBLE);
 
+                progressBar.setVisibility(View.VISIBLE);
+                if (email.isEmpty()) {
+                    Toast.makeText(Login.this, "Email must not be empty", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
+                } else if (password.isEmpty()) {
+                    Toast.makeText(Login.this, "Password must not be empty", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
+                }
+                   else if (password.length() < 6) {
+                        input_password.setError("Characters must be more than 6");
+                        progressBar.setVisibility(View.GONE);
+                } else {
                     firebaseAuth.signInWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                         @Override
                         public void onSuccess(AuthResult authResult) {
@@ -78,14 +79,13 @@ public class Login extends AppCompatActivity {
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(Login.this, "Error !" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Login.this, "Error!" + e.getMessage(), Toast.LENGTH_SHORT).show();
                             progressBar.setVisibility(View.GONE);
                         }
                     });
                 }
             }
         });
-
         btnNewUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,17 +143,16 @@ public class Login extends AppCompatActivity {
                     //If user is Admin
                     startActivity(new Intent(getApplicationContext(), AdminUser.class));
                     finish();
-                } else {
+                }
                     if (documentSnapshot.getString("isUser") != null) {
-                        startActivity(new Intent(getApplicationContext(), com.example.mechtech.Dash.class));
+                        startActivity(new Intent(getApplicationContext(),Dash.class));
                         finish();
-                    }
                 }
             }
         });
     }
 
-    private boolean checkField(TextInputLayout textInputLayout) {
+  /*  private boolean checkField(TextInputLayout textInputLayout) {
         if (textInputLayout.getEditText().toString().isEmpty()) {
             textInputLayout.setError("Ensure all fields are Entered");
             valid = false;
@@ -161,14 +160,6 @@ public class Login extends AppCompatActivity {
             valid = true;
         }
         return valid;
-    }
+    }*/
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            startActivity(new Intent(getApplicationContext(), Dash.class));
-            finish();
-        }
-    }
 }
