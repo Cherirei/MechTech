@@ -22,13 +22,13 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Add Stations"
+                android:text="Add Service    Stations"
                 android:gravity="center"
                 android:textColor="#000"
                 android:textSize="20sp"/>
         </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
         <com.google.android.material.circularreveal.cardview.CircularRevealCardView
-            android:id="@+id/card_add_mechanics"
+            android:id="@+id/card_view_stations"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="100dp"
@@ -37,7 +37,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="View Stations"
+                android:text="View Service  Stations"
                 android:gravity="center"
                 android:textColor="#000"
                 android:textSize="20sp"/>

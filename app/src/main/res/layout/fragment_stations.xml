@@ -26,7 +26,8 @@
                 android:text="Add Service Stations"
                 android:textColor="#000"
                 android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"/> >
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -118,17 +119,35 @@
                     android:hint="Enter Hours"
                     android:textColor="#000"/>
             </LinearLayout>
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginTop="30dp">
+    <Button
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        android:layout_margin="20dp"
+        android:id="@+id/btn_back_station"
+        android:gravity="center"
+        android:layout_gravity="left"
+        android:textColor="#fff"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:background="@drawable/bg_btn"/>
         <Button
-            android:layout_width="120dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Add"
             android:id="@+id/btn_add_station"
-            android:layout_marginTop="30dp"
-            android:layout_gravity="center"
+            android:layout_margin="20dp"
+            android:layout_gravity="right"
             android:textColor="#fff"
             android:backgroundTint="@color/colorPrimaryDark"
             android:background="@drawable/bg_btn"/>
+        </LinearLayout>
        </LinearLayout>
 
     </RelativeLayout>

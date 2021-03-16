@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment;
 
 public class AdminPanelFragment extends Fragment {
 
-    CardView cardViewAdd_Stations;
+    CardView cardViewAdd_Stations,cardView_ViewSations;
     private View view;
 
     @Override
@@ -21,6 +21,7 @@ public class AdminPanelFragment extends Fragment {
 
 
         cardViewAdd_Stations=view.findViewById(R.id.card_add_stations);
+        cardView_ViewSations=view.findViewById(R.id.card_view_stations);
 
 
 
@@ -28,6 +29,12 @@ public class AdminPanelFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frament_container,new StationsFragment()).commit();
+            }
+        });
+        cardView_ViewSations.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frament_container,new ViewStationsFragment()).commit();
             }
         });
         return view;

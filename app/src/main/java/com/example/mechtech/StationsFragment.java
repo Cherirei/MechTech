@@ -1,6 +1,7 @@
 package com.example.mechtech;
 
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class StationsFragment extends Fragment {
 
     EditText stationCode, stationName, stationCounty, stationAddress, stationworkingHrs;
-    Button btnAdd;
+    Button btnAdd, btnBack;
     FirebaseDatabase rootNode;
     DatabaseReference reference;
     private View view;
@@ -33,6 +34,7 @@ public class StationsFragment extends Fragment {
         stationAddress = view.findViewById(R.id.station_postal_code);
         stationworkingHrs = view.findViewById(R.id.working_hours);
         btnAdd = view.findViewById(R.id.btn_add_station);
+        btnBack=view.findViewById(R.id.btn_back_station);
 
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
@@ -48,10 +50,17 @@ public class StationsFragment extends Fragment {
                 String address = stationAddress.getText().toString();
                 String workingHrs = stationworkingHrs.getText().toString();
 
-                String userId=FirebaseDatabase.getInstance().toString();
+               // String userId = FirebaseDatabase.getInstance().toString();
                 ServiceStations serviceStations = new ServiceStations(code, name, county, address, workingHrs);
                 reference.child(address).setValue(serviceStations);
                 Toast.makeText(getActivity(), "Successfully Added", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frament_container,new AdminPanelFragment()).commit();
             }
         });
         return view;
