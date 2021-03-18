@@ -17,12 +17,12 @@
             android:id="@+id/tool_bar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimaryDark"
+            android:background="@drawable/bg_round"
             android:elevation="4dp"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             app:title="Service Station Finder"
-            app:titleTextColor="#ffffff"></androidx.appcompat.widget.Toolbar>
+            app:titleTextColor="#ffffff" />
 
         <FrameLayout
             android:id="@+id/frament_container"

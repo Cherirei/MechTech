@@ -9,10 +9,10 @@
         android:id="@+id/notification"
         android:icon="@drawable/notifications"
         android:title="Notification" />
-    <item
+   <!-- <item
         android:id="@+id/setting"
         android:icon="@drawable/settings"
-        android:title="Setting" />
+        android:title="Setting" />-->
     <item
         android:id="@+id/profile"
         android:icon="@drawable/profile"

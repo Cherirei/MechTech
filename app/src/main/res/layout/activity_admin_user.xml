@@ -11,9 +11,10 @@
         android:id="@+id/admin_tool_bar"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:background="@color/colorPrimaryDark"
+        android:background="@drawable/bg_round"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:title="Admin">
+        app:title="Admin Dashboard"
+        app:titleMarginStart="20dp">
 
         <Button
             android:id="@+id/buttonLog_Out"
@@ -23,6 +24,7 @@
             android:background="@color/colorPrimaryDark"
             android:onClick="logout"
             android:text="Logout"
+            android:layout_marginRight="10dp"
             android:textSize="15sp"
             android:textColor="#F12828"/>
     </androidx.appcompat.widget.Toolbar>

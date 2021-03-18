@@ -1,10 +1,9 @@
 package com.example.mechtech;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -35,7 +33,7 @@ public class Dash extends AppCompatActivity implements NavigationView.OnNavigati
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard);
+        setContentView(R.layout.activity_dash);
 
         toolbar = findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
@@ -80,9 +78,9 @@ public class Dash extends AppCompatActivity implements NavigationView.OnNavigati
                 case R.id.notification:
                     selectedFragment = new NotificationFragment();
                     break;
-                case R.id.setting:
+               /* case R.id.setting:
                     selectedFragment = new SettingFragment();
-                    break;
+                    break;*/
                 case R.id.profile:
                     selectedFragment = new UserProfileFrament();
                     break;
@@ -113,9 +111,9 @@ public class Dash extends AppCompatActivity implements NavigationView.OnNavigati
             case R.id.nav_home:
                 getSupportFragmentManager().beginTransaction().replace(R.id.frament_container, new DashboardFragment()).commit();
                 break;
-          /*  case R.id.nav_service_stations:
-                getSupportFragmentManager().beginTransaction().replace(R.id.frament_container, new ServiceStationFragment()).commit();
-                break;*/
+            case R.id.nav_service_stations:
+                getSupportFragmentManager().beginTransaction().replace(R.id.frament_container, new StationCallFragment()).commit();
+                break;
             case R.id.nav_profile:
                 getSupportFragmentManager().beginTransaction().replace(R.id.frament_container, new UserProfileFrament()).commit();
                 break;
@@ -131,22 +129,46 @@ public class Dash extends AppCompatActivity implements NavigationView.OnNavigati
                 shareIntent.putExtra(android.content.Intent.EXTRA_TEXT,app_url);
                 startActivity(Intent.createChooser(shareIntent, "Share via"));*/
                 break;
-            case R.id.nav_feedback:
+            /*case R.id.nav_feedback:
                 getSupportFragmentManager().beginTransaction().replace(R.id.frament_container, new FeedbackFragment()).commit();
-                break;
+                break;*/
             case R.id.nav_contact_us:
+                //try {
 
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)
-                        == PackageManager.PERMISSION_GRANTED) {
-                    //if permission granted
-                    Intent intent = new Intent(Intent.ACTION_CALL);
-                    intent.setData(Uri.parse("tel:0729105112"));
-                    startActivity(intent);
-                } else {
-                    //when permission denied
-                    ActivityCompat.requestPermissions(this, new String[]
-                            {Manifest.permission.CALL_PHONE}, 44);
-                }
+                String[] address = {"johkirwa17@gmail.com","jkirwa17@gmail.com"};
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setData(Uri.parse("sendto: "));
+                intent.setPackage("com.google.android.gm");
+                intent.setType("message/rfc822");
+                intent.putExtra(Intent.EXTRA_EMAIL, address);
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Service Station Finder Request");
+                intent.putExtra(android.content.Intent.EXTRA_TEXT,
+                        Html.fromHtml("Am not able to use the application to find the nearby stations for help...Please assist.."));
+                //intent.putExtra(Intent.EXTRA_TEXT,"Am not able to use the application to find the nearby stations for help...Please assist..");
+                //if (intent.resolveActivity(getPackageManager())!=null) {
+                startActivity(intent);
+               /* }
+                else {
+                    Toast.makeText(this, "No app to use", Toast.LENGTH_SHORT).show();
+                }*/
+
+              /*catch (Exception ex)
+              {
+                  Toast.makeText(this, "No Application to use", Toast.LENGTH_SHORT).show();
+                  // Either ignore or log the error.
+              }*/
+
+              /*  if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                //if permission granted
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setData(Uri.parse("tel:0729105112"));
+                startActivity(intent);
+            } else {
+                //when permission denied
+                ActivityCompat.requestPermissions(this, new String[]
+                        {Manifest.permission.CALL_PHONE}, 44);
+            }*/
                 break;
             case R.id.nav_sign_out:
                 logout();

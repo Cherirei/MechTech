@@ -14,9 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".AdminUser"></activity>
-        <activity android:name=".User_Profile" />
+       <!-- <activity android:name=".User_Profile" />
         <activity android:name=".Settings" />
-        <activity android:name=".Notification" />
+        <activity android:name=".Notification" />-->
         <activity android:name=".Dash" />
         <activity android:name=".Login" />
         <activity android:name=".SignUp" />

@@ -119,6 +119,24 @@
                     android:hint="Enter Hours"
                     android:textColor="#000"/>
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:text="Phone Number: "
+                    android:textSize="18sp"
+                    android:textColor="#000"/>
+                <EditText
+                    android:id="@+id/station_phone_no"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter PhoneNo"
+                    android:inputType="number"
+                    android:textColor="#000"/>
+            </LinearLayout>
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"

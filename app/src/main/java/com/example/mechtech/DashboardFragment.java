@@ -1,6 +1,7 @@
 package com.example.mechtech;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -28,8 +29,8 @@ import java.util.Locale;
 
 public class DashboardFragment extends Fragment {
     private FusedLocationProviderClient fusedLocationProviderClient;
-    private Button btnLocation;
-    private TextView textView1, textView2, textView3, textView4, textView5;
+    private Button btnLocation,btnGet_Service;
+    TextView textView1, textView2, textView3, textView4, textView5;
     private View view;
 
     @Override
@@ -39,6 +40,7 @@ public class DashboardFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
         btnLocation = view.findViewById(R.id.button_location);
+        btnGet_Service=view.findViewById(R.id.button_get_service);
         textView1 = view.findViewById(R.id.text_view1);
         textView2 = view.findViewById(R.id.text_view2);
         textView3 = view.findViewById(R.id.text_view3);
@@ -62,6 +64,16 @@ public class DashboardFragment extends Fragment {
                 }
             }
         });
+
+        btnGet_Service.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frament_container,new StationCallFragment()).commit();
+                // String filterCounty=textView2.getText().toString();
+                //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frament_container,new ViewStationsFragment(filterCounty)).commit();
+            }
+        });
+
         return view;
     }
 

@@ -22,7 +22,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Add Service    Stations"
+                android:text="Add Service Stations"
                 android:gravity="center"
                 android:textColor="#000"
                 android:textSize="20sp"/>
@@ -37,7 +37,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="View Service  Stations"
+                android:text="View Service Stations"
                 android:gravity="center"
                 android:textColor="#000"
                 android:textSize="20sp"/>

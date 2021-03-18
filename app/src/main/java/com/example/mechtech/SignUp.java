@@ -97,7 +97,7 @@ public class SignUp extends AppCompatActivity {
                                 //Save data to firestore
                                 df.set(userInfo);
 
-                                startActivity(new Intent(getApplicationContext(), Dash.class));
+                                startActivity(new Intent(getApplicationContext(), DashboardFragment.class));
                                 finish();
                             } else {
                                 Toast.makeText(SignUp.this, "Error !" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
