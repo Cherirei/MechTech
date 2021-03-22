@@ -1,6 +1,7 @@
 package com.example.mechtech;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,10 +22,10 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class UserProfileFrament extends Fragment {
+public class UserProfileFragment extends Fragment {
 
     private View view;
-    TextView name, username, email, phoneNo, username2,resetPassword;
+    TextView name, username, email, phoneNo, username2, resetPassword, editProfile;
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     String userId;
@@ -41,13 +42,14 @@ public class UserProfileFrament extends Fragment {
         username2 = view.findViewById(R.id.username2);
         email = view.findViewById(R.id.profile_email);
         phoneNo = view.findViewById(R.id.profile_phoneNo);
-        resetPassword=view.findViewById(R.id.resetPassword);
+        resetPassword = view.findViewById(R.id.resetPassword);
+        editProfile = view.findViewById(R.id.edit_profile);
 
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
 
         userId = fAuth.getCurrentUser().getUid();
-        user=fAuth.getCurrentUser();
+        user = fAuth.getCurrentUser();
 
         DocumentReference documentReference = fStore.collection("Users").document(userId);
         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -77,10 +79,9 @@ public class UserProfileFrament extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         //extract the mail and send the link
                         String newPassword = resetPassword.getText().toString().trim();
-                        if (newPassword.isEmpty()){
+                        if (newPassword.isEmpty()) {
                             Toast.makeText(getContext(), "Field is Empty!!", Toast.LENGTH_SHORT).show();
-                        }
-                        else {
+                        } else {
                             user.updatePassword(newPassword).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
@@ -105,6 +106,21 @@ public class UserProfileFrament extends Fragment {
 
             }
         });
+
+        editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent i = new Intent(v.getContext(), EditProfile.class);
+                i.putExtra("Name", name.getText().toString());
+                i.putExtra("Email", email.getText().toString());
+                i.putExtra("UserName", username2.getText().toString());
+                i.putExtra("PhoneNo", phoneNo.getText().toString());
+                // getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frament_container, new EditProfileFragment()).commit();
+                startActivity(i);
+            }
+        });
+
         return view;
     }
 }

@@ -82,7 +82,7 @@ public class Dash extends AppCompatActivity implements NavigationView.OnNavigati
                     selectedFragment = new SettingFragment();
                     break;*/
                 case R.id.profile:
-                    selectedFragment = new UserProfileFrament();
+                    selectedFragment = new UserProfileFragment();
                     break;
             }
             getSupportFragmentManager().beginTransaction().replace(R.id.frament_container, selectedFragment).commit();
@@ -115,7 +115,7 @@ public class Dash extends AppCompatActivity implements NavigationView.OnNavigati
                 getSupportFragmentManager().beginTransaction().replace(R.id.frament_container, new StationCallFragment()).commit();
                 break;
             case R.id.nav_profile:
-                getSupportFragmentManager().beginTransaction().replace(R.id.frament_container, new UserProfileFrament()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.frament_container, new UserProfileFragment()).commit();
                 break;
             case R.id.nav_rate_us:
                 getSupportFragmentManager().beginTransaction().replace(R.id.frament_container, new RatingFragment()).commit();

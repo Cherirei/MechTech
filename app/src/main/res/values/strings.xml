@@ -4,6 +4,7 @@
     <string name="navigation_drawer_close">Close Navigation drawer</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="user_profile">Profile</string>
+    <string name="edit_profile">Edit Profile</string>
     <string name="setting_fragment">Settings</string>
     <string name="rate_us">Rate Our Application</string>
     <string name="feedback">Feedback</string>
