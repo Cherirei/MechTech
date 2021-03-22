@@ -270,6 +270,7 @@
                 android:textSize="18dp" />
 
             <TextView
+                android:id="@+id/resetPassword"
                 android:layout_width="240dp"
                 android:layout_height="50dp"
                 android:layout_marginLeft="-10dp"
