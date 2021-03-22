@@ -29,7 +29,7 @@ public class SignUp extends AppCompatActivity {
     DatabaseReference reference;
     FirebaseAuth firebaseAuth;
     FirebaseFirestore fStore;
-  //  Boolean valid = true;
+    //  Boolean valid = true;
 
     TextInputLayout regName, regUsername, regEmail, regPhoneNo, regPassword;
     Button btnlogin_user, btnRegister;
@@ -74,8 +74,7 @@ public class SignUp extends AppCompatActivity {
                 } else if (password.isEmpty()) {
                     Toast.makeText(SignUp.this, "Password must not be empty", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
-                }
-                else if (password.length() < 6) {
+                } else if (password.length() < 6) {
                     regPassword.setError("Characters must be more than 6");
                     progressBar.setVisibility(View.GONE);
                 } else {
@@ -97,7 +96,7 @@ public class SignUp extends AppCompatActivity {
                                 //Save data to firestore
                                 df.set(userInfo);
 
-                                startActivity(new Intent(getApplicationContext(), DashboardFragment.class));
+                                startActivity(new Intent(getApplicationContext(), Dash.class));
                                 finish();
                             } else {
                                 Toast.makeText(SignUp.this, "Error !" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
@@ -105,7 +104,7 @@ public class SignUp extends AppCompatActivity {
                             }
                         }
                     });
-            }
+                }
 
              /*   UserHelperClass helperClass=new UserHelperClass(name,username,email,phonenumber,password);
 
